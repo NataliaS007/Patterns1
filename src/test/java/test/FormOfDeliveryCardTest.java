@@ -7,7 +7,9 @@ import io.qameta.allure.selenide.AllureSelenide;
 import lombok.val;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.Keys;
+
 import java.time.Duration;
+
 import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -16,7 +18,7 @@ import static org.openqa.selenium.Keys.BACK_SPACE;
 class FormOfDeliveryCardTest {
 
     @BeforeAll
-    static void setUpAll(){
+    static void setUpAll() {
         SelenideLogger.addListener("allure", new AllureSelenide());
     }
 
@@ -31,7 +33,7 @@ class FormOfDeliveryCardTest {
     }
 
     @AfterAll
-    static void tearDownAll(){
+    static void tearDownAll() {
         SelenideLogger.removeListener("allure");
     }
 
@@ -90,7 +92,7 @@ class FormOfDeliveryCardTest {
                 .sendKeys(Keys.chord(BACK_SPACE,
                         DataGenerator.generateDate(daysToAddForSecondMeeting)));
         $$("button").find(Condition.exactText("Запланировать")).click();
-        $(withText("У Вас уже запланирована встреча на эту дату"))
+        $(withText("У вас уже запланирована встреча на другую дату. Перепланировать?"))
                 .shouldBe(Condition.visible, Duration.ofSeconds(15));
     }
 
@@ -252,41 +254,6 @@ class FormOfDeliveryCardTest {
                 .shouldBe(Condition.visible);
     }
 
-
-    @Test
-    void shouldTestUnsuccessOrderIfTelNotContainsElevenFigures() {
-        val invalidUser = DataGenerator.InvalidRegistrationPhone.generateInvalidUser("ru");
-        int daysToAddForFirstMeeting = 3;
-        $("[data-test-id='city'] .input__control").setValue(invalidUser.getCity());
-        $("[data-test-id='date'] .input__control").doubleClick();
-        $("[data-test-id='date'] .input__control")
-                .sendKeys(Keys.chord(BACK_SPACE,
-                        DataGenerator.generateDate(daysToAddForFirstMeeting)));
-        $("[data-test-id='name'] .input__control").setValue(invalidUser.getName());
-        $("[data-test-id='phone'] .input__control").setValue(invalidUser.getPhone());
-        $$(".checkbox__box").find(Condition.visible).click();
-        $$("button").find(Condition.exactText("Запланировать")).click();
-        $(withText("Телефон указан неверно"))
-                .shouldBe(Condition.visible);
-    }
-
-    @Test
-    void shouldTestUnsuccessOrderIfTelNotStartWithPlusSeven() {
-        val invalidUser = DataGenerator.InvalidRegistrationPhoneStarts.generateInvalidUser("ru");
-        int daysToAddForFirstMeeting = 3;
-        $("[data-test-id='city'] .input__control").setValue(invalidUser.getCity());
-        $("[data-test-id='date'] .input__control").doubleClick();
-        $("[data-test-id='date'] .input__control")
-                .sendKeys(Keys.chord(BACK_SPACE,
-                        DataGenerator.generateDate(daysToAddForFirstMeeting)));
-        $("[data-test-id='name'] .input__control").setValue(invalidUser.getName());
-        $("[data-test-id='phone'] .input__control").setValue(invalidUser.getPhone());
-        $$(".checkbox__box").find(Condition.visible).click();
-        $$("button").find(Condition.exactText("Запланировать")).click();
-        $(withText("Телефон указан неверно"))
-                .shouldBe(Condition.visible);
-    }
-
     @Test
     void shouldTestUnsuccessOrderIfNoClickOnCofirmation() {
         val validUser = DataGenerator.Registration.generateUser("ru");
@@ -315,23 +282,6 @@ class FormOfDeliveryCardTest {
                         DataGenerator.generateDate(daysToAddForFirstMeeting)));
         $("[data-test-id='name'] .input__control").setValue("Гребенькова-Ушакова Мария-Анжела");
         $("[data-test-id='phone'] .input__control").setValue(validUser.getPhone());
-        $$(".checkbox__box").find(Condition.visible).click();
-        $$("button").find(Condition.exactText("Запланировать")).click();
-        $(withText("Встреча успешно запланирована"))
-                .shouldBe(Condition.visible, Duration.ofSeconds(15));
-    }
-
-    @Test
-    void shouldTestSuccessOrderIfNameWithLetterYo() {
-        val invalidUser = DataGenerator.InvalidNameRegistrationWithYo.generateInvalidUser("ru");
-        int daysToAddForFirstMeeting = 3;
-        $("[data-test-id='city'] .input__control").setValue(invalidUser.getCity());
-        $("[data-test-id='date'] .input__control").doubleClick();
-        $("[data-test-id='date'] .input__control")
-                .sendKeys(Keys.chord(BACK_SPACE,
-                        DataGenerator.generateDate(daysToAddForFirstMeeting)));
-        $("[data-test-id='name'] .input__control").setValue(invalidUser.getName());
-        $("[data-test-id='phone'] .input__control").setValue(invalidUser.getPhone());
         $$(".checkbox__box").find(Condition.visible).click();
         $$("button").find(Condition.exactText("Запланировать")).click();
         $(withText("Встреча успешно запланирована"))

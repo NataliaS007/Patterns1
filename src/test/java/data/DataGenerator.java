@@ -21,7 +21,7 @@ public class DataGenerator {
 
     public static String generateCity(String locale) {
         Faker faker = new Faker(new Locale(locale));
-        String city = faker.options().option("Москва", "Санкт-Петербург", "Ульяновск", "Тула", "Липецк", "Казань", "Орeл", "Саранск", "Чебоксары", "Краснодар", "Екатеринбург");
+        String city = faker.options().option("Москва", "Санкт-Петербург", "Ульяновск", "Тула", "Липецк", "Казань", "Орёл", "Саранск", "Чебоксары", "Краснодар", "Екатеринбург");
         return city;
     }
 
@@ -133,5 +133,11 @@ public class DataGenerator {
         String city;
         String name;
         String phone;
+
+        public UserInfo(String city, String name, String phone) {
+            this.city = city;
+            this.name = name;
+            this.phone = phone;
+        }
     }
 }
